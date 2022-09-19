@@ -5,7 +5,7 @@
 version: 2.1
 
 jobs:
-  linting-circleci:
+  docker-lint:
     docker:
       # Use the same Docker base as the project
       - image: python:3.7.3-stretch
@@ -45,11 +45,11 @@ jobs:
       - run:
           name: Build Docker image and pust to Docker hub
           command: |
-            ./run_docker.sh
+            chmod +x ./run_docker.sh
 
 workflows:
   default:
     jobs:
       - linting-circleci
       - docker-build:
-          requires: [linting-circleci]
+          requires: [docker-lint]
