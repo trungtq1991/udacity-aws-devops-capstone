@@ -5,11 +5,11 @@
 version: 2.1
 
 jobs:
-  build:
+  linting-circleci:
     docker:
       # Use the same Docker base as the project
       - image: python:3.7.3-stretch
-    working_directory: ~/repo
+    #working_directory: ~/repo
     steps:
       - checkout
       - restore_cache:
@@ -19,7 +19,7 @@ jobs:
             - v1-dependencies-
       # Download and cache dependencies
       - run:
-          name: install dependencies
+          name: Install dependencies
           command: |
             make install
       - save_cache:
@@ -28,12 +28,28 @@ jobs:
           key: v1-dependencies-{{ checksum "requirements.txt" }}
       # run setup to create python virtualenv & source it
       - run:
-          name: run setup
+          name: Run setup
           command: |
             make setup
       # run lint to checks for bugs in a Dockerfile
       - run:
-          name: run lint
+          name: Run lint
           command: |
             . venv/bin/activate
-            make lint 
+            make lint
+  
+  docker-build:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build Docker image and pust to Docker hub
+          command: |
+            ./run_docker.sh
+
+workflows:
+  default:
+    jobs:
+      - linting-circleci
+      - docker-build:
+          requires: [linting-circleci]
