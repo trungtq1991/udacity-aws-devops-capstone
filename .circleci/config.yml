@@ -1,23 +1,23 @@
 # Python CircleCI 2.1 configuration file
-#
 # Check https://circleci.com/docs/2.1/language-python/ for more details
-#
 version: 2.1
+
+# An orb for working with Amazon Elastic Container Service for Kubernetes (Amazon EKS)
+# Check https://circleci.com/developer/orbs/orb/circleci/aws-eks for more details
+orbs:
+  aws-eks: circleci/aws-eks@2.2.0
+  kubernetes: circleci/kubernetes@1.3
 
 jobs:
   docker-lint:
     docker:
-      # Use the same Docker base as the project
       - image: python:3.7.3-stretch
-    #working_directory: ~/repo
     steps:
       - checkout
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "requirements.txt" }}
-            # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      # Download and cache dependencies
       - run:
           name: Install dependencies
           command: |
@@ -26,14 +26,12 @@ jobs:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "requirements.txt" }}
-      # run setup to create python virtualenv & source it
       - run:
-          name: Run setup
+          name: Run setup to create python virtualenv & source it
           command: |
             make setup
-      # run lint to checks for bugs in a Dockerfile
       - run:
-          name: Run lint
+          name: Run lint to checks for bugs in a Dockerfile
           command: |
             . venv/bin/activate
             make lint
@@ -46,6 +44,29 @@ jobs:
           name: Build Docker image and pust to Docker hub
           command: |
             bash ./run_docker.sh
+
+  create-cluster:
+    description: >
+      Creates an EKS cluster and required resources (e.g. VPC) using the eksctl
+      tool.
+    docker:
+      - image: cimg/python:3.7
+    parameters:
+      cluster-name:
+        description: |
+          Enter name of the EKS cluster
+        type: string
+        default: myEKSCluster
+    steps:
+      - checkout
+      - install-aws-iam-authenticator:
+          release-tag: ''
+      - aws-eks/create-cluster:
+          cluster-name: << parameters.cluster-name >>
+          node-type: t2.medium
+          skip-kubectl-install: false
+          nodes-min: 1
+          nodes-max: 2
 
 workflows:
   default:
