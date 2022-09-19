@@ -45,7 +45,7 @@ jobs:
       - run:
           name: Build Docker image and pust to Docker hub
           command: |
-            chmod +x ./run_docker.sh
+            bash ./run_docker.sh
 
 workflows:
   default:
