@@ -50,6 +50,6 @@ jobs:
 workflows:
   default:
     jobs:
-      - linting-circleci
+      - docker-lint
       - docker-build:
           requires: [docker-lint]
