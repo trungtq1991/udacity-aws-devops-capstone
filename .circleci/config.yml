@@ -89,7 +89,7 @@ jobs:
           resource-name: deployments/udacity-devpos-capstone-cluster
 
 workflows:
-  default:
+  deployment:
     jobs:
       - docker-lint
       - docker-build:
