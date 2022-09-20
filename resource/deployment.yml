@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: udacity-devops-capstone-project
+  labels:
+    app: udacity-devops-capstone-project
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: udacity-devops-capstone-project
+  strategy:
+    rollingUpdate:
+      maxSurge: 30%
+      maxUnavailable: 30%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: udacity-devops-capstone-project
+    spec:
+      containers:
+      - name: udacity-devops-capstone-project
+        imagePullPolicy: Always
+        image: trungtq1991/udacity-aws-devops-capstone
+        ports:
+        - containerPort: 80

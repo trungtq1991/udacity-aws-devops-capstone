@@ -56,7 +56,7 @@ jobs:
         description: |
           Enter name of the EKS cluster
         type: string
-        default: udacity-devpos-capstone-cluster
+        default: udacity-devpos-capstone
     steps:
       - checkout
       - aws-eks/install-aws-iam-authenticator:
@@ -76,7 +76,7 @@ jobs:
         description: |
           Enter name of the EKS cluster
         type: string
-        default: udacity-devpos-capstone-cluster
+        default: udacity-devpos-capstone
     steps:
       - checkout
       - kubernetes/install
@@ -85,8 +85,33 @@ jobs:
           install-kubectl: true
       - kubernetes/create-or-update-resource:
           get-rollout-status: false
-          resource-file-path: deployment.yaml
-          resource-name: deployments/udacity-devpos-capstone-cluster
+          resource-file-path: resource/deployment.yml
+          resource-name: resource/udacity-devpos-capstone-project
+      - kubernetes/create-or-update-resource:
+          resource-file-path: resource/loadbalancer.yml
+          resource-name: resource/udacity-devpos-capstone-project
+
+  test-cluster:
+    docker:
+      - image: cimg/python:3.7
+    parameters:
+      cluster-name:
+        description: |
+          Enter name of the EKS cluster
+        type: string
+        default: udacity-devpos-capstone
+    steps:
+      - checkout
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          cluster-name: << parameters.cluster-name >>
+          install-kubectl: true
+      - run:
+          command: |
+            kubectl get nodes -o wide
+            kubectl get all 
+            kubectl get svc -o wide
+            kubectl describe pods
 
 workflows:
   deployment:
@@ -96,4 +121,6 @@ workflows:
           requires: [docker-lint]
       - create-cluster
       - create-deployment:
+          requires: [create-cluster]
+      - test-cluster:
           requires: [create-cluster]
