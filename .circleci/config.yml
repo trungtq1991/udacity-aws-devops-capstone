@@ -59,7 +59,7 @@ jobs:
         default: udacity-devpos-capstone-cluster
     steps:
       - checkout
-      - install-aws-iam-authenticator:
+      - aws-eks/install-aws-iam-authenticator:
           release-tag: ''
       - aws-eks/create-cluster:
           cluster-name: << parameters.cluster-name >>
