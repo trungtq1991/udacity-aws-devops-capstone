@@ -141,4 +141,4 @@ workflows:
       - create-deployment:
           requires: [create-cluster]
       - test-cluster:
-          requires: [create-cluster]
+          requires: [create-deployment]
