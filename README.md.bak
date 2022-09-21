@@ -46,7 +46,7 @@ Step 5: Test your pipeline.
 + Verify that pipeline works as designed it.
 + Take a screenshot of the Circle CI pipeline showing deployment.
 
-### Step build pipeline
+## Step build pipeline
 
 1. Run `make lint` to check Dockerfile.
 2. If check Dockerfile OK, start build Docker image.
