@@ -1,14 +1,14 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: udacity-devops-capstone-project
+  name: udacity-devpos-trungtq7-project
   labels:
-    app: udacity-devops-capstone-project
+    app: udacity-devpos-trungtq7-project
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: udacity-devops-capstone-project
+      app: udacity-devpos-trungtq7-project
   strategy:
     rollingUpdate:
       maxSurge: 30%
@@ -17,10 +17,10 @@ spec:
   template:
     metadata:
       labels:
-        app: udacity-devops-capstone-project
+        app: udacity-devpos-trungtq7-project
     spec:
       containers:
-      - name: udacity-devops-capstone-project
+      - name: udacity-devpos-trungtq7-project
         imagePullPolicy: Always
         image: trungtq1991/udacity-aws-devops-capstone
         ports:

@@ -58,7 +58,7 @@ jobs:
         description: |
           Enter name of the EKS cluster
         type: string
-        default: udacity-devpos-capstone
+        default: udacity-devpos-trungtq7
     steps:
       - checkout
       - aws-eks/install-aws-iam-authenticator:
@@ -78,7 +78,7 @@ jobs:
         description: |
           Enter name of the EKS cluster
         type: string
-        default: udacity-devpos-capstone
+        default: udacity-devpos-trungtq7
     steps:
       - checkout
       - kubernetes/install
@@ -88,10 +88,10 @@ jobs:
       - kubernetes/create-or-update-resource:
           get-rollout-status: false
           resource-file-path: resource/deployment.yml
-          resource-name: resource/udacity-devpos-capstone-project
+          resource-name: resource/udacity-devpos-trungtq7-project
       - kubernetes/create-or-update-resource:
           resource-file-path: resource/loadbalancer.yml
-          resource-name: resource/udacity-devpos-capstone-project
+          resource-name: resource/udacity-devpos-trungtq7-project
 
   test-cluster:
     docker:
@@ -101,7 +101,7 @@ jobs:
         description: |
           Enter name of the EKS cluster
         type: string
-        default: udacity-devpos-capstone
+        default: udacity-devpos-trungtq7
     steps:
       - checkout
       - kubernetes/install
