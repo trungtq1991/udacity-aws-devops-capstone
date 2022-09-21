@@ -113,13 +113,31 @@ jobs:
             kubectl get svc -o wide
             kubectl describe pods
 
+  delete-cluster:
+    docker:
+      - image: cimg/python:3.7
+    parameters:
+      cluster-name:
+        description: |
+          Enter name of the EKS cluster
+        type: string
+        default: udacity-devpos-capstone
+    steps:
+      - checkout
+      - aws-eks/install-aws-iam-authenticator:
+          release-tag: ''
+      - aws-eks/delete-cluster:
+          cluster-name: << parameters.cluster-name >>
+          wait: true
+
 workflows:
   deployment:
     jobs:
       - docker-lint
       - docker-build:
           requires: [docker-lint]
-      - create-cluster
+      - create-cluster:
+          requires: [docker-build]
       - create-deployment:
           requires: [create-cluster]
       - test-cluster:
