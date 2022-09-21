@@ -82,7 +82,6 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
-          name: Install dependences
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
           install-kubectl: true
@@ -106,7 +105,6 @@ jobs:
     steps:
       - checkout
       - kubernetes/install
-          name: Install dependences
       - aws-eks/update-kubeconfig-with-authenticator:
           cluster-name: << parameters.cluster-name >>
           install-kubectl: true
