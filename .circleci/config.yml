@@ -68,7 +68,7 @@ jobs:
           node-type: t2.medium
           skip-kubectl-install: false
           nodes-min: 1
-          nodes-max: 3
+          nodes-max: 2
 
   create-deployment:
     docker:
