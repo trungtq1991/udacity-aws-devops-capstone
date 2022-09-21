@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: udacity-devpos-trungtq7-project
+  name: udacity-devpos-capstone-project
 spec:
   type: LoadBalancer
   ports:
@@ -9,4 +9,4 @@ spec:
       targetPort: 80
       protocol: TCP
   selector:
-    app: udacity-devpos-trungtq7-project
+    app: udacity-devpos-capstone-project
